@@ -1,0 +1,44 @@
+using Application.Services.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using NArchitecture.Core.Persistence.DependencyInjection;
+using Persistence.Contexts;
+using Persistence.Repositories;
+
+namespace Persistence;
+
+public static class PersistenceServiceRegistration
+{
+    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<BaseDbContext>(options => options.UseInMemoryDatabase("BaseDb"));
+        services.AddDbMigrationApplier(buildServices => buildServices.GetRequiredService<BaseDbContext>());
+
+        services.AddScoped<IEmailAuthenticatorRepository, EmailAuthenticatorRepository>();
+        services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
+        services.AddScoped<IOtpAuthenticatorRepository, OtpAuthenticatorRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
+
+        services.AddScoped<IAnalogueBookRepository, AnalogueBookRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IBookFormatRepository, BookFormatRepository>();
+        services.AddScoped<IEBookRepository, EBookRepository>();
+        services.AddScoped<IFormatRepository, FormatRepository>();
+        services.AddScoped<ILanguageRepository, LanguageRepository>();
+        services.AddScoped<ILanguageBookRepository, LanguageBookRepository>();
+        services.AddScoped<ILibraryRepository, LibraryRepository>();
+        services.AddScoped<IMaterialRepository, MaterialRepository>();
+        services.AddScoped<IPublisherRepository, PublisherRepository>();
+        services.AddScoped<IPublisherBookRepository, PublisherBookRepository>();
+        services.AddScoped<ISubjectRepository, SubjectRepository>();
+        services.AddScoped<ISubjectBookRepository, SubjectBookRepository>();
+        services.AddScoped<ITranslatorRepository, TranslatorRepository>();
+        services.AddScoped<ITranslatorBookRepository, TranslatorBookRepository>();
+        services.AddScoped<IWriterRepository, WriterRepository>();
+        services.AddScoped<IWriterBookRepository, WriterBookRepository>();
+        return services;
+    }
+}
